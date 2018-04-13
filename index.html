@@ -1,7 +1,7 @@
 <html>
 
 <head>
-<title>ICG WebGL &mdash; HW1</title>
+<title>shading &mdash; training</title>
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 
 <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
@@ -57,7 +57,6 @@
 		vmvPosition = uMVMatrix * vec4(aVertexPosition, 1.0);
 		gl_Position = uPMatrix * vmvPosition;
 		fragcolor = vec4(aFrontColor.rgb, 1.0);
-		
 	}
 </script>
 
@@ -384,8 +383,8 @@
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
-        mat4.identity(mvMatrix);
 		
+        mat4.identity(mvMatrix);
 		
 		mat4.translate(mvMatrix, [0, 0, -2.5]);
         mat4.rotate(mvMatrix, degToRad(teapotAngle), [1, 0, 0]);
