@@ -335,12 +335,7 @@
         Model[i].teapotVertexPositionBuffer.numItems = teapotData.vertexPositions.length / 3;
     }
 
-    function loadAllModel(){
-        loadModel(0,"Kangaroo.json");
-        		
-	}
-	
-    function loadModel(i,source) {
+	function loadModel(i,source) {
         var request = new XMLHttpRequest();
         request.open("GET", source);
         request.onreadystatechange = function () {
@@ -350,7 +345,12 @@
         }
         request.send();
     }
-
+	
+    function loadAllModel(){
+        loadModel(0,"Kangaroo.json");
+		loadModel(1,"Car_road.json");
+	}
+    
 
     var teapotAngle = 0;
 
@@ -378,42 +378,73 @@
 		mvPopMatrix();
 	}
 
+	function selectShader(shades){
+		if(shades=="flat"){
+			shaderProgram = flatShadingProgram;
+		}else if(shades=="gouraud"){
+			shaderProgram = gouraudShadingProgram;
+		}else{
+			shaderProgram = phongShadingProgram;
+		}
+	}
+	
+	function selectModel(models){
+		if(models=="Kangaroo"){
+			drawModel(0);
+		}else {
+			drawModel(1);
+		}
+	}
+	/*
+	ma4.shear=function(theta, sMatrix){
+		
+	}
+	*/
     function drawScene(position) {
-        gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+        
+		var shader1 = document.getElementById("shadingMode1").value;
+		var shader2 = document.getElementById("shadingMode2").value;
+		var shader3 = document.getElementById("shadingMode3").value;
+		
+		var model1	= document.getElementById("Model1").value;
+		var model2	= document.getElementById("Model2").value;
+		var model3  = document.getElementById("Model3").value;
+		
+		gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
 		
         mat4.identity(mvMatrix);
 		
-		mat4.translate(mvMatrix, [0, 0, -2.5]);
+		mat4.translate(mvMatrix, [-1, 0, -2.5]);
         mat4.rotate(mvMatrix, degToRad(teapotAngle), [1, 0, 0]);
 		
-        shaderProgram = gouraudShadingProgram;
+        selectShader(shader1);
 		gl.useProgram(shaderProgram);
 		
-		drawModel(0);
+		selectModel(model1);
+		
+		mat4.identity(mvMatrix);
+		
+        mat4.translate(mvMatrix, [0, 0, -2.5]);
+		
+        mat4.rotate(mvMatrix, degToRad(teapotAngle), [1, 0, 0]);
+		
+		selectShader(shader2);
+		gl.useProgram(shaderProgram);
+		selectModel(model2);
+		
 		
 		mat4.identity(mvMatrix);
 		
         mat4.translate(mvMatrix, [1, 0, -2.5]);
 		
-        mat4.rotate(mvMatrix, degToRad(teapotAngle), [1, 0, 0]);
+        mat4.rotate(mvMatrix, degToRad(teapotAngle), [1,0, 0]);
 		
-		shaderProgram = phongShadingProgram;
+		selectShader(shader3);
 		gl.useProgram(shaderProgram);
-		drawModel(0);
-		
-		
-		mat4.identity(mvMatrix);
-		
-        mat4.translate(mvMatrix, [-1, 0, -2.5]);
-		
-        mat4.rotate(mvMatrix, degToRad(teapotAngle), [1, 0, 0]);
-		
-		shaderProgram = flatShadingProgram;
-		gl.useProgram(shaderProgram);
-		drawModel(0);
+		selectModel(model3);
     }
 
 
@@ -457,7 +488,50 @@
 <body onload="webGLStart();">
     <canvas id="ICG-canvas" style="border: none;" width="1200" height="600"></canvas>
     <br/>
-
+	<h2>Model 1:</h2>
+	ShadingMode:
+	<select id="shadingMode1">
+        <option selected value="flat">Flat</option>
+        <option value="gouraud">Gouraud</option>
+		<option value="phong">Phong</option>
+    </select>
+    <br/>
+	Model:
+	<select id="Model1">
+        <option selected value="Kangaroo">Kangaroo</option>
+        <option value="Car">Car</option>
+    </select>
+	
+	<h2>Model 2:</h2>
+	ShadingMode:
+	<select id="shadingMode2">
+        <option value="flat">Flat</option>
+        <option selected value="gouraud">Gouraud</option>
+		<option value="phong">Phong</option>
+    </select>
+    <br/>
+	Mode2:
+	<select id="Model2">
+        <option selected value="Kangaroo">Kangaroo</option>
+        <option value="Car">Car</option>
+    </select>
+	
+	
+	<h2>Model 3:</h2>
+	ShadingMode:
+	<select id="shadingMode3">
+        <option value="flat">Flat</option>
+        <option value="gouraud">Gouraud</option>
+		<option selected value="phong">Phong</option>
+    </select>
+    <br/>
+	Mode3:
+	<select id="Model3">
+        <option selected value="Kangaroo">Kangaroo</option>
+        <option value="Car">Car</option>
+    </select>
+	
+	
 </body>
 
 </html>
