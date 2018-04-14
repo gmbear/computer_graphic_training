@@ -293,11 +293,13 @@
 	
 	function initBuffer(i){
 	    var buffer = new Object();
-	    Model.push(buffer);
-		Model[i].teapotVertexNormalBuffer = gl.createBuffer();
-		Model[i].teapotVertexFrontColorBuffer = gl.createBuffer();
-		Model[i].teapotVertexBackColorBuffer = gl.createBuffer();
-		Model[i].teapotVertexPositionBuffer = gl.createBuffer();
+	    
+		
+		buffer.teapotVertexNormalBuffer = gl.createBuffer();
+		buffer.teapotVertexFrontColorBuffer = gl.createBuffer();
+		buffer.teapotVertexBackColorBuffer = gl.createBuffer();
+		buffer.teapotVertexPositionBuffer = gl.createBuffer();
+		Model.push(buffer);
 	}
 	
 	
@@ -309,7 +311,7 @@
     */
     function handleLoadedTeapot(i,teapotData) {
         
-		initBuffer(i);
+		initBuffer();
 		
         gl.bindBuffer(gl.ARRAY_BUFFER, Model[i].teapotVertexNormalBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(teapotData.vertexNormals), gl.STATIC_DRAW);
