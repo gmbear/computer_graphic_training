@@ -291,15 +291,19 @@
 
 	var Model = new Array();
 	
-	function initBuffer(i){
-	    var buffer = new Object();
+	function modelbuffer(){
+		this.teapotVertexNormalBuffer = gl.createBuffer();
+		this.teapotVertexFrontColorBuffer = gl.createBuffer();
+		this.teapotVertexBackColorBuffer = gl.createBuffer();
+		this.teapotVertexPositionBuffer = gl.createBuffer();
+	}
+	
+	function initBuffer(){
+		for(var i=0; i<5; i++){
+			var buffer = new modelbuffer();
+			Model.push(buffer);
+		}
 	    
-		
-		buffer.teapotVertexNormalBuffer = gl.createBuffer();
-		buffer.teapotVertexFrontColorBuffer = gl.createBuffer();
-		buffer.teapotVertexBackColorBuffer = gl.createBuffer();
-		buffer.teapotVertexPositionBuffer = gl.createBuffer();
-		Model.push(buffer);
 	}
 	
 	
@@ -311,7 +315,7 @@
     */
     function handleLoadedTeapot(i,teapotData) {
         
-		initBuffer();
+		
 		
         gl.bindBuffer(gl.ARRAY_BUFFER, Model[i].teapotVertexNormalBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(teapotData.vertexNormals), gl.STATIC_DRAW);
@@ -474,7 +478,7 @@
         var canvas = document.getElementById("ICG-canvas");
         initGL(canvas);
         initShaders();
-		var source;
+		initBuffer();
 		loadAllModel()
         gl.clearColor(0.0, 0.2, 0.2, 1.0);
         gl.enable(gl.DEPTH_TEST);
