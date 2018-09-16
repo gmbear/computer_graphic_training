@@ -401,11 +401,8 @@
 			drawModel(1);
 		}
 	}
-	/*
-	ma4.shear=function(theta, sMatrix){
-		
-	}
-	*/
+	
+	
     function drawScene(position) {
         
 		var shader1 = document.getElementById("shadingMode1").value;
@@ -416,6 +413,8 @@
 		var model2	= document.getElementById("Model2").value;
 		var model3  = document.getElementById("Model3").value;
 		
+		var sMatrix = mat4.create();
+		
 		gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
@@ -425,6 +424,8 @@
 		
 		mat4.translate(mvMatrix, [-1, 0, -2.5]);
         mat4.rotate(mvMatrix, degToRad(teapotAngle), [1, 0, 0]);
+		mat4.shear(0.5, sMatrix);
+		mat4.multiply(mvMatrix, sMatrix, mvMatrix);
 		
         selectShader(shader1);
 		gl.useProgram(shaderProgram);
