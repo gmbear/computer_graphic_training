@@ -424,7 +424,6 @@
 		
 		mat4.translate(mvMatrix, [-1, 0, -2.5]);
         mat4.rotate(mvMatrix, degToRad(teapotAngle), [1, 0, 0]);
-		mat4.shear(0.5, sMatrix);
 		mat4.multiply(mvMatrix, sMatrix, mvMatrix);
 		
         selectShader(shader1);
